@@ -6,14 +6,16 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      app
   build-depends:       base >= 4.7 && < 5
-                     , text
-                     , parsec
+                     , containers
                      , either
+                     , parsec
+                     , text
   ghc-options:         -Wall
   default-language:    Haskell2010
   exposed-modules:     Drawing
                      , Commands
                      , Parser
+                     , Canvas
 
 executable drawing
   hs-source-dirs:      main
@@ -37,3 +39,4 @@ test-suite drawing-test
                      , text
   other-modules:       DrawingSpec
                      , ParserSpec
+                     , CanvasSpec

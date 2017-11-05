@@ -19,6 +19,7 @@ data CanvasCommand
 
 data DrawingError
   = ParseError Text
+  | NoCanvas
   deriving (Eq, Show)
 
 newtype CanvasState = CanvasState
@@ -26,13 +27,7 @@ newtype CanvasState = CanvasState
   }
 
 update :: CanvasCommand -> CanvasState -> CanvasState
-update command currentState =
-  case command of
-    CreateCanvas width height ->
-      currentState
-    DrawLine from to ->
-      currentState
-    DrawRectangle from to ->
-      currentState
+update command (CanvasState currentCommands) =
+  CanvasState (currentCommands ++ [command])
 
 
