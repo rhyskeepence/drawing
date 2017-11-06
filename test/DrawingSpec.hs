@@ -12,10 +12,10 @@ import Control.Monad.State
 
 spec :: Spec
 spec = describe "Drawing Program" $ do
-  it "should quit" $
+  it "can be quit" $
     runWithUserInput ["Q"] `shouldBe` ["Enter Command: "]
 
-  it "should create canvas and draw a line interactively" $
+  it "can create canvas and draw a line interactively" $
     runWithUserInput ["C 10 5", "L 1 1 2 1", "Q"] `shouldBe` [
         "Enter Command: "
       , "------------\n\

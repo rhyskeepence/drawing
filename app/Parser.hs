@@ -48,5 +48,6 @@ parseQuit = do
   void $ string "Q"
   return Quit
 
+decimal :: Parser Int
 decimal = read <$> P.many1 digit
 

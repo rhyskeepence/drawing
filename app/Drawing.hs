@@ -7,6 +7,7 @@ import           Canvas (render)
 import           Commands
 import           Data.Text (Text, pack, unpack)
 import           Data.Maybe (fromMaybe)
+import           Data.Monoid
 import           System.Console.Haskeline
 import           Parser
 
@@ -20,7 +21,7 @@ run state = do
   let result = updateState input state
   case result of
     Left (ParseError msg) -> do
-      writeLine msg
+      writeLine $ "\ESC[1;31m" <> msg <> "\ESC[0m\STX"
       run state
 
     Left NoCanvas -> do
