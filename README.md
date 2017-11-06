@@ -20,3 +20,5 @@ A valid drawing command results in a call to `render` in [Canvas.hs](app/Canvas.
 Rendering a canvas just folds over all the drawing commands received, updating a `Canvas`. The Canvas itself is implemented as an IntMap, with the key being generated using `makeKey`. This turned out to be easier to manage than a 2D array. The line drawing algorithm is [naive](https://en.wikipedia.org/wiki/Line_drawing_algorithm).
 
 The Parser is implemented using `parsec`.
+
+The drawing module defines a `UserInput` class. This is defined for InputT IO (a haskeline wrapper around IO - essentially allowing it to run with real IO) as well as an instance in [DrawingSpec.hs](test/DrawingSpec.hs) using `State`, allowing user input and output to be stubbed.
