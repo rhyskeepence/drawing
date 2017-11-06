@@ -31,14 +31,23 @@ instance UserInput (State InputOutput) where
 
 
 spec :: Spec
-spec = describe "Drawing Program" $
+spec = describe "Drawing Program" $ do
   it "should quit" $
     runWithUserInput ["Q"] `shouldBe` ["Enter Command: "]
+
+  it "should create canvas" $
+    runWithUserInput ["C 10 5", "Q"] `shouldBe` [
+        "Enter Command: "
+      , "           \n\
+        \           \n\
+        \           \n\
+        \           \n\
+        \           \n\
+        \           "
+      , "Enter Command: "]
 
 
 runWithUserInput :: [Text] -> [Text]
 runWithUserInput input =
   output
   where (InputOutput _ output) = execState (run $ Commands.CanvasState []) (InputOutput input [])
-
-

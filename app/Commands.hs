@@ -26,8 +26,12 @@ newtype CanvasState = CanvasState
   { commands :: [CanvasCommand]
   }
 
-update :: CanvasCommand -> CanvasState -> CanvasState
-update command (CanvasState currentCommands) =
-  CanvasState (currentCommands ++ [command])
+update :: UserCommand -> CanvasState -> Either DrawingError CanvasState
+update userCommand (CanvasState currentCommands) =
+  case userCommand of
+    CanvasCommand canvasCommand ->
+      Right $ CanvasState $ currentCommands ++ [canvasCommand]
+    _ ->
+      Right $ CanvasState currentCommands
 
 

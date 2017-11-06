@@ -3,13 +3,10 @@
 module Canvas (render) where
 
 import Commands
-import Control.Monad
-import Data.Text (Text, pack, intercalate)
-import Data.Maybe (fromJust)
+import Data.Text (Text, intercalate)
 import Data.Monoid
 import qualified Data.IntMap.Strict as IntMap
 import qualified Data.List as L
-
 
 data Canvas = Canvas
   { canvasWidth :: Int
@@ -17,28 +14,22 @@ data Canvas = Canvas
   , canvasPixels :: IntMap.IntMap Bool
   }
 
-render :: CanvasState -> Either DrawingError Text
-render (CanvasState commands) =
+render :: CanvasState -> Text
+render (CanvasState canvasCommands) =
   let
-    canvas = foldM applyCommand Nothing commands
+    canvas = foldl applyCommand Nothing canvasCommands
   in
-    fmap renderCanvasPixels canvas
+    renderCanvasPixels canvas
 
-applyCommand :: Maybe Canvas -> CanvasCommand -> Either DrawingError (Maybe Canvas)
+applyCommand :: Maybe Canvas -> CanvasCommand -> Maybe Canvas
 applyCommand canvas command =
   case command of
     CreateCanvas width height ->
-      Right $ Just $ Canvas width height IntMap.empty
+      Just $ Canvas width height IntMap.empty
     DrawLine point1 point2 ->
-      drawOnCanvas (drawLine point1 point2) canvas
+      fmap (drawLine point1 point2) canvas
     DrawRectangle point1 point2 ->
-      drawOnCanvas (drawRectangle point1 point2) canvas
-
-drawOnCanvas :: (Canvas -> Canvas) -> Maybe Canvas -> Either DrawingError (Maybe Canvas)
-drawOnCanvas f maybeCanvas =
-  case maybeCanvas of
-    Just canvas -> Right $ Just $ f canvas
-    Nothing -> Left NoCanvas
+      fmap (drawRectangle point1 point2) canvas
 
 drawLine :: Point -> Point -> Canvas -> Canvas
 drawLine (x1, y1) (x2, y2) canvas =
@@ -63,8 +54,6 @@ drawRectangle (x1, y1) (x2, y2) canvas =
    ,((x1, y2), (x2, y2))
    ,((x2, y1), (x2, y2))]
 
-
-
 renderCanvasPixels :: Maybe Canvas -> Text
 renderCanvasPixels maybeCanvas =
   let
@@ -74,7 +63,6 @@ renderCanvasPixels maybeCanvas =
       Nothing -> ""
       Just canvas ->
         intercalate "\n" $ L.map (makeRow canvas) [0 .. (canvasHeight canvas)]
-
 
 setPoint :: Point -> Canvas -> Canvas
 setPoint point canvas =
@@ -89,4 +77,3 @@ pointToText point canvas =
 
 makeKey :: Canvas -> Point -> Int
 makeKey canvas (x, y) = x + (canvasWidth canvas * y)
-

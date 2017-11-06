@@ -2,6 +2,7 @@
 
 module Drawing where
 
+import           Canvas (render)
 import           Commands
 import           Data.Text
 import           Data.Text.IO
@@ -22,14 +23,28 @@ run :: UserInput m => CanvasState -> m ()
 run state = do
   write "Enter Command: "
   input <- readLine
-  let command = parse input
-  case command of
+  let result = updateState input state
+  case result of
     Left (ParseError msg) -> do
       writeLine msg
       run state
 
-    Right Quit ->
+    Left NoCanvas -> do
+      writeLine "You must first create a canvas."
+      run state
+
+    Right (Quit, _) ->
       return ()
 
-    Right (CanvasCommand _) ->
-      run state
+    Right (_, newState) -> do
+      writeLine $ render newState
+      run newState
+
+updateState :: Text -> CanvasState -> Either DrawingError (UserCommand, CanvasState)
+updateState input state = do
+  command <- parse input
+  newState <- update command state
+  return (command, newState)
+
+
+
