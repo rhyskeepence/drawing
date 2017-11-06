@@ -6,7 +6,7 @@ Run `stack exec drawing` to run the program.
 
 # WTF?
 
-Start with [Main.hs](src/Main.hs). 
+Start with [Main.hs](main/Main.hs). 
 
 After outputting some brief usage, it calls `run` in the [Drawing.hs](app/Drawing.hs) module, with an initial state of [] - the empty list.
 (this call is wrapped in `runInputT defaultSettings` which is some housekeeping to do with `haskeline`, to support history, etc.)
