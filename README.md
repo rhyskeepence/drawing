@@ -13,7 +13,7 @@ After outputting some brief usage, it calls `run` in the [Drawing.hs](app/Drawin
 
 Run then prompts for user input, and then `parseAndUpdate` with the user input and the current state. `parseAndUpdate` first parses the input by calling `parse` in [Parser.hs](app/Parser.hs), and then `updateState` in [Command.hs](app/Commands.hs). Both of these return `Either`, and they may fail with a `DrawingError`.
 
-The result of `parseAndUpdate` is pattern matched. Errors in parsing or updating the state (ie, commands received out of order) are printed to the screen, and then `run` is called again recursively. A Quit command will return, which has the effect of exiting the program. 
+The result of `parseAndUpdate` is pattern matched. Errors in parsing or updating the state (ie, commands received out of order) are printed to the screen, and then `run` is called again recursively. A Quit command will `return ()` (this is similar to yield in scala, and not at all like return in java), which has the effect of exiting the program. 
 
 A valid drawing command results in a call to `render` in [Canvas.hs](app/Canvas.hs) with the new state. Then `run` is called recursively to accept the next command. 
   
