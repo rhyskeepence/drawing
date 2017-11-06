@@ -1,8 +1,8 @@
 module Main where
 
-import Commands
-import Drawing
-import System.Console.Haskeline
+import           Commands
+import           Drawing
+import           System.Console.Haskeline
 
 main :: IO ()
 main = do

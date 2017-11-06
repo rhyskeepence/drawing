@@ -1,6 +1,6 @@
 module Commands where
 
-import Data.Text
+import           Data.Text
 
 type Width = Int
 type Height = Int
@@ -29,9 +29,5 @@ newtype CanvasState = CanvasState
 update :: UserCommand -> CanvasState -> Either DrawingError CanvasState
 update userCommand (CanvasState currentCommands) =
   case userCommand of
-    CanvasCommand canvasCommand ->
-      Right $ CanvasState $ currentCommands ++ [canvasCommand]
-    _ ->
-      Right $ CanvasState currentCommands
-
-
+    CanvasCommand canvasCommand -> Right $ CanvasState $ currentCommands ++ [canvasCommand]
+    _                           -> Right $ CanvasState currentCommands

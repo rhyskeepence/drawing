@@ -1,15 +1,15 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE OverloadedStrings #-}
 
 module Drawing where
 
-import           Canvas (render)
+import           Canvas                   (render)
 import           Commands
-import           Data.Text (Text, pack, unpack)
-import           Data.Maybe (fromMaybe)
+import           Data.Maybe               (fromMaybe)
 import           Data.Monoid
-import           System.Console.Haskeline
+import           Data.Text                (Text, pack, unpack)
 import           Parser
+import           System.Console.Haskeline
 
 class Monad m => UserInput m where
   prompt :: Text -> m Text
@@ -41,10 +41,8 @@ updateState input state = do
   newState <- update command state
   return (command, newState)
 
-
 instance UserInput (InputT IO) where
   prompt question = do
     maybeLine <- getInputLine $ unpack question
     return $ pack $ fromMaybe "" maybeLine
-
   writeLine line = outputStrLn $ unpack line

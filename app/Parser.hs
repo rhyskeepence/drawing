@@ -1,14 +1,16 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Parser (parse) where
+module Parser
+  ( parse
+  ) where
 
-import Commands
-import qualified Text.Parsec as P
-import Text.Parsec.Text (Parser)
-import Text.ParserCombinators.Parsec.Char
-import Data.Text
-import Data.Either.Combinators
-import Control.Monad (void)
+import           Commands
+import           Control.Monad                      (void)
+import           Data.Either.Combinators
+import           Data.Text
+import qualified Text.Parsec                        as P
+import           Text.Parsec.Text                   (Parser)
+import           Text.ParserCombinators.Parsec.Char
 
 parse :: Text -> Either DrawingError UserCommand
 parse input =
@@ -50,4 +52,3 @@ parseQuit = do
 
 decimal :: Parser Int
 decimal = read <$> P.many1 digit
-
