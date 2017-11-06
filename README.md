@@ -1,4 +1,4 @@
-# Drawing Exercise (in Haskell)
+# Drawing Exercise (in Glorious Haskell)
 
 Run `stack test` to execute all tests
 
