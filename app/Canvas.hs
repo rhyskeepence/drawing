@@ -57,12 +57,12 @@ drawRectangle (x1, y1) (x2, y2) canvas =
 renderCanvasPixels :: Maybe Canvas -> Text
 renderCanvasPixels maybeCanvas =
   let
-    makeRow canvas y = L.foldl (\xAcc x -> xAcc <> pointToText (x, y) canvas) "" [0 .. (canvasWidth canvas)]
+    makeRow canvas y = L.foldl (\xAcc x -> xAcc <> pointToText (x, y) canvas) "" [0 .. canvasWidth canvas + 1]
   in
     case maybeCanvas of
       Nothing -> ""
       Just canvas ->
-        intercalate "\n" $ L.map (makeRow canvas) [0 .. (canvasHeight canvas)]
+        intercalate "\n" $ L.map (makeRow canvas) [0 .. canvasHeight canvas + 1]
 
 setPoint :: Point -> Canvas -> Canvas
 setPoint point canvas =
@@ -71,9 +71,14 @@ setPoint point canvas =
 pointToText :: Point -> Canvas -> Text
 pointToText point canvas =
   let
+    (x, y) = point
     hasPoint = IntMap.findWithDefault False (makeKey canvas point) (canvasPixels canvas)
+    isHorizontalBorder = (y == 0 || y == canvasHeight canvas + 1)
+    isVerticalBorder = (x == 0 || x == canvasWidth canvas + 1)
   in
-    if hasPoint then "X" else " "
+    if isHorizontalBorder then "-"
+    else if isVerticalBorder then "|"
+    else if hasPoint then "X" else " "
 
 makeKey :: Canvas -> Point -> Int
 makeKey canvas (x, y) = x + (canvasWidth canvas * y)
