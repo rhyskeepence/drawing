@@ -18,7 +18,7 @@ class Monad m => UserInput m where
 run :: UserInput m => CanvasState -> m ()
 run state = do
   input <- prompt "Enter Command: "
-  let result = updateState input state
+  let result = parseAndUpdate input state
   case result of
     Left (ParseError msg) -> do
       writeLine $ "\ESC[1;31m" <> msg <> "\ESC[0m\STX"
@@ -35,10 +35,10 @@ run state = do
       writeLine $ render newState
       run newState
 
-updateState :: Text -> CanvasState -> Either DrawingError (UserCommand, CanvasState)
-updateState input state = do
+parseAndUpdate :: Text -> CanvasState -> Either DrawingError (UserCommand, CanvasState)
+parseAndUpdate input state = do
   command <- parse input
-  newState <- update command state
+  newState <- updateState command state
   return (command, newState)
 
 instance UserInput (InputT IO) where

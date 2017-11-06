@@ -15,6 +15,14 @@ spec = describe "Drawing Program" $ do
   it "can be quit" $
     runWithUserInput ["Q"] `shouldBe` ["Enter Command: "]
 
+  it "responds with an error if a canvas has not been created" $
+    runWithUserInput ["L 1 1 2 1", "R 1 1 2 1", "Q"] `shouldBe` [
+        "Enter Command: "
+      , "You must first create a canvas."
+      , "Enter Command: "
+      , "You must first create a canvas."
+      , "Enter Command: "]
+
   it "can create canvas and draw a line interactively" $
     runWithUserInput ["C 10 5", "L 1 1 2 1", "Q"] `shouldBe` [
         "Enter Command: "
