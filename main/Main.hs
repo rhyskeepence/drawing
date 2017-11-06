@@ -2,6 +2,7 @@ module Main where
 
 import Commands
 import Drawing
+import System.Console.Haskeline
 
 main :: IO ()
-main = run $ Commands.CanvasState []
+main = runInputT defaultSettings $ run $ Commands.CanvasState []

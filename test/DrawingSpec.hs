@@ -36,21 +36,16 @@ spec = describe "Drawing Program" $ do
       , "Enter Command: "]
 
 
-
 data InputOutput = InputOutput
   { userInput :: [Text]
   , programOutput :: [Text]
   }
 
 instance UserInput (State InputOutput) where
-  readLine = do
+  prompt message = do
     (InputOutput input output) <- get
-    put (InputOutput (tail input) output)
+    put (InputOutput (tail input) (output ++ [message]))
     return $ head input
-
-  write text = do
-    (InputOutput input output) <- get
-    put (InputOutput input (output ++ [text]))
 
   writeLine text = do
     (InputOutput input output) <- get

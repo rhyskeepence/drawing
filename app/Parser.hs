@@ -16,7 +16,7 @@ parse input =
   in mapLeft (ParseError . pack . show) parseResult
 
 parseCommand :: Parser UserCommand
-parseCommand = P.choice [parseCreateCanvas, parseDrawLine,parseDrawRectangle, parseQuit]
+parseCommand = P.choice [parseCreateCanvas, parseDrawLine, parseDrawRectangle, parseQuit]
 
 parseCreateCanvas :: Parser UserCommand
 parseCreateCanvas = do

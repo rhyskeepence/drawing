@@ -1,28 +1,22 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleInstances #-}
 
 module Drawing where
 
 import           Canvas (render)
 import           Commands
-import           Data.Text
-import           Data.Text.IO
-import           System.IO
+import           Data.Text (Text, pack, unpack)
+import           Data.Maybe (fromMaybe)
+import           System.Console.Haskeline
 import           Parser
 
 class Monad m => UserInput m where
-  readLine :: m Text
-  write :: Text -> m ()
+  prompt :: Text -> m Text
   writeLine :: Text -> m ()
-
-instance UserInput IO where
-  readLine = Data.Text.IO.getLine
-  write text = Data.Text.IO.putStr text >> hFlush stdout
-  writeLine = Data.Text.IO.putStrLn
 
 run :: UserInput m => CanvasState -> m ()
 run state = do
-  write "Enter Command: "
-  input <- readLine
+  input <- prompt "Enter Command: "
   let result = updateState input state
   case result of
     Left (ParseError msg) -> do
@@ -47,4 +41,9 @@ updateState input state = do
   return (command, newState)
 
 
+instance UserInput (InputT IO) where
+  prompt question = do
+    maybeLine <- getInputLine $ unpack question
+    return $ pack $ fromMaybe "" maybeLine
 
+  writeLine line = outputStrLn $ unpack line

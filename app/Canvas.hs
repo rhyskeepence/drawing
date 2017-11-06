@@ -9,8 +9,8 @@ import qualified Data.IntMap.Strict as IntMap
 import qualified Data.List as L
 
 data Canvas = Canvas
-  { canvasWidth :: Int
-  , canvasHeight :: Int
+  { canvasWidth :: Width
+  , canvasHeight :: Height
   , canvasPixels :: IntMap.IntMap Bool
   }
 

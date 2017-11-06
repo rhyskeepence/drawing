@@ -8,6 +8,7 @@ library
   build-depends:       base >= 4.7 && < 5
                      , containers
                      , either
+                     , haskeline
                      , parsec
                      , text
   ghc-options:         -Wall
@@ -24,6 +25,7 @@ executable drawing
   ghc-options:         -Wall -threaded -rtsopts -with-rtsopts=-N
   build-depends:       base >= 4.7 && < 5
                      , drawing
+                     , haskeline
                      , text
 
 test-suite drawing-test
